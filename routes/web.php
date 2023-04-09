@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -25,6 +29,15 @@ Route::get('/', function () {
 
 Route::resource('/pelanggan', PelangganController::class);
 Route::get('/hapus-pelanggan/{id}',[PelangganController::class,'hapus'])->name('hapus.pelanggan');
+Route::resource('/supplier', SupplierController::class);
+Route::get('/hapus-supplier/{id}',[SupplierController::class,'hapus'])->name('hapus.supplier');
+Route::resource('/barang', BarangController::class);
+Route::get('/hapus-barang/{id}',[BarangController::class,'hapus'])->name('hapus.barang');
+Route::resource('/barang-masuk', BarangMasukController::class);
+Route::get('/hapus-barang-masuk/{id}',[BarangMasukController::class,'hapus'])->name('hapus.barang-masuk');
+Route::resource('/transaksi', TransaksiController::class);
+Route::get('/hapus-transaksi/{id}',[TransaksiController::class,'hapus'])->name('hapus.transaksi');
+
 
 Route::get('/optimize', function() {
     $exitCode = Artisan::call('optimize');

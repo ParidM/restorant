@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pelanggan;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
 
-class PelangganController extends Controller
+class SupplierController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,7 +27,7 @@ class PelangganController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Pelanggan::all();
+            $data = Supplier::all();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -39,7 +39,7 @@ class PelangganController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
             }
-        return view('pelanggan.index');
+        return view('supplier.index');
     }
 
     /**
@@ -61,22 +61,19 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_pelanggan' => 'required',
-            'jk' => 'required',
+            'nama_supplier' => 'required',
             'no_telp' => 'required',
             'alamat' => 'required',
         ], $messages = [
-            'nama.required' => 'Kolom Nama Pelanggan Wajib Diisi',
-            'ukuran.required' => 'Kolom Ukuran Wajib Diisi',
+            'nama.required' => 'Kolom Nama Supplier Wajib Diisi',
             'no_telp.required' => 'Kolom No. Telepon Beli Wajib Diisi',
             'alamat.required' => 'Kolom Alamat Wajib Diisi',
         ]);
         if($validator->passes()) {
-            $nama = Pelanggan::updateOrCreate(
+            $nama = Supplier::updateOrCreate(
                 ['id' => $request->id],
                 [
-                    'nama_pelanggan' => $request->nama_pelanggan,
-                    'jk' => $request->jk,
+                    'nama_supplier' => $request->nama_supplier,
                     'no_telp' => $request->no_telp,
                     'alamat' => $request->alamat,
                 ]
@@ -89,25 +86,25 @@ class PelangganController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\supplier  $supplier
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        return view('pelanggan.show', compact('pelanggan'));
+        $supplier = Supplier::find($id);
+        return view('supplier.show', compact('supplier'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\supplier  $supplier
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        return response()->json($pelanggan);
+        $supplier = Supplier::find($id);
+        return response()->json($supplier);
     }
 
 
@@ -115,10 +112,10 @@ class PelangganController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, pelanggan $pelanggan)
+    public function update(Request $request, supplier $supplier)
     {
         //
     }
@@ -126,13 +123,13 @@ class PelangganController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\supplier  $supplier
      * @return \Illuminate\Http\Response
      */
     public function hapus($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        $pelanggan->delete();
-        return response()->json($pelanggan);
+        $supplier = Supplier::find($id);
+        $supplier->delete();
+        return response()->json($supplier);
     }
 }

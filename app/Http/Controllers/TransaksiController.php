@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
+use App\Models\Barang;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
 
-class PelangganController extends Controller
+class TransaksiController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -26,8 +28,10 @@ class PelangganController extends Controller
      */
     public function index(Request $request)
     {
+        $pelanggan = Pelanggan::pluck('nama_pelanggan', 'id');
+        $barang = Barang::pluck('nama_barang', 'id');
         if ($request->ajax()) {
-            $data = Pelanggan::all();
+            $data = Transaksi::all();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -36,10 +40,16 @@ class PelangganController extends Controller
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" title="Hapus" data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm delete"><i class="metismenu-icon pe-7s-trash"></i></a>';
                     return $btn;
                 })
+                ->addColumn('barang', function($data){
+                    return $data->barang->nama_barang;
+                })
+                ->addColumn('pelanggan', function($data){
+                    return $data->pelanggan->nama_pelanggan;
+                })
                 ->rawColumns(['action'])
                 ->make(true);
             }
-        return view('pelanggan.index');
+        return view('transaksi.index', compact('barang','pelanggan'));
     }
 
     /**
@@ -61,24 +71,24 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_pelanggan' => 'required',
-            'jk' => 'required',
-            'no_telp' => 'required',
-            'alamat' => 'required',
+            'barang_id' => 'required',
+            'pelanggan_id' => 'required',
+            'tanggal' => 'required',
+            'jumlah' => 'required',
         ], $messages = [
-            'nama.required' => 'Kolom Nama Pelanggan Wajib Diisi',
-            'ukuran.required' => 'Kolom Ukuran Wajib Diisi',
-            'no_telp.required' => 'Kolom No. Telepon Beli Wajib Diisi',
-            'alamat.required' => 'Kolom Alamat Wajib Diisi',
+            'barang_id.required' => 'Kolom Nama barang Wajib Diisi',
+            'pelanggan_id.required' => 'Kolom Nama barang Wajib Diisi',
+            'tanggal.required' => 'Kolom Nama barang Wajib Diisi',
+            'jumlah.required' => 'Kolom Nama barang Wajib Diisi',
         ]);
         if($validator->passes()) {
-            $nama = Pelanggan::updateOrCreate(
+            $nama = Transaksi::updateOrCreate(
                 ['id' => $request->id],
                 [
-                    'nama_pelanggan' => $request->nama_pelanggan,
-                    'jk' => $request->jk,
-                    'no_telp' => $request->no_telp,
-                    'alamat' => $request->alamat,
+                    'barang_id' => $request->barang_id,
+                    'pelanggan_id' => $request->pelanggan_id,
+                    'tanggal' => $request->tanggal,
+                    'jumlah' => $request->jumlah,
                 ]
             );
             return response()->json($nama);
@@ -89,25 +99,25 @@ class PelangganController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\Transaksi  $Transaksi
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        return view('pelanggan.show', compact('pelanggan'));
+        $transaksi = Transaksi::find($id);
+        return view('transaksi.show', compact('transaksi'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\Transaksi  $Transaksi
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        return response()->json($pelanggan);
+        $transaksi = Transaksi::find($id);
+        return response()->json($transaksi);
     }
 
 
@@ -115,10 +125,10 @@ class PelangganController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\Transaksi  $Transaksi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, pelanggan $pelanggan)
+    public function update(Request $request, Transaksi $Transaksi)
     {
         //
     }
@@ -126,13 +136,13 @@ class PelangganController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\Transaksi  $Transaksi
      * @return \Illuminate\Http\Response
      */
     public function hapus($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        $pelanggan->delete();
-        return response()->json($pelanggan);
+        $transaksi = Transaksi::find($id);
+        $transaksi->delete();
+        return response()->json($transaksi);
     }
 }

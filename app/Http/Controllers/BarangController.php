@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pelanggan;
+use App\Models\Barang;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
 
-class PelangganController extends Controller
+class BarangController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -26,8 +27,9 @@ class PelangganController extends Controller
      */
     public function index(Request $request)
     {
+        $supplier = Supplier::pluck('nama_supplier', 'id');
         if ($request->ajax()) {
-            $data = Pelanggan::all();
+            $data = Barang::all();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -36,10 +38,16 @@ class PelangganController extends Controller
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" title="Hapus" data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm delete"><i class="metismenu-icon pe-7s-trash"></i></a>';
                     return $btn;
                 })
+                ->addColumn('supplier', function($data){
+                    return $data->supplier->nama_supplier;
+                })
+                ->addColumn('harga', function($data){
+                    return "Rp. ".number_format($data->harga);
+                })
                 ->rawColumns(['action'])
                 ->make(true);
             }
-        return view('pelanggan.index');
+        return view('barang.index', compact('supplier'));
     }
 
     /**
@@ -61,24 +69,24 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_pelanggan' => 'required',
-            'jk' => 'required',
-            'no_telp' => 'required',
-            'alamat' => 'required',
+            'nama_barang' => 'required',
+            'supplier_id' => 'required',
+            'harga' => 'required',
+            'stok_barang' => 'required',
         ], $messages = [
-            'nama.required' => 'Kolom Nama Pelanggan Wajib Diisi',
-            'ukuran.required' => 'Kolom Ukuran Wajib Diisi',
-            'no_telp.required' => 'Kolom No. Telepon Beli Wajib Diisi',
-            'alamat.required' => 'Kolom Alamat Wajib Diisi',
+            'nama_barang.required' => 'Kolom Nama barang Wajib Diisi',
+            'supplier_id.required' => 'Kolom No. Telepon Beli Wajib Diisi',
+            'harga.required' => 'Kolom Alamat Wajib Diisi',
+            'stok_barang.required' => 'Kolom Alamat Wajib Diisi',
         ]);
         if($validator->passes()) {
-            $nama = Pelanggan::updateOrCreate(
+            $nama = Barang::updateOrCreate(
                 ['id' => $request->id],
                 [
-                    'nama_pelanggan' => $request->nama_pelanggan,
-                    'jk' => $request->jk,
-                    'no_telp' => $request->no_telp,
-                    'alamat' => $request->alamat,
+                    'nama_barang' => $request->nama_barang,
+                    'supplier_id' => $request->supplier_id,
+                    'harga' => $request->harga,
+                    'stok_barang' => $request->stok_barang,
                 ]
             );
             return response()->json($nama);
@@ -89,25 +97,25 @@ class PelangganController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\barang  $barang
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        return view('pelanggan.show', compact('pelanggan'));
+        $barang = Barang::find($id);
+        return view('barang.show', compact('barang'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\barang  $barang
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        return response()->json($pelanggan);
+        $barang = Barang::find($id);
+        return response()->json($barang);
     }
 
 
@@ -115,10 +123,10 @@ class PelangganController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\barang  $barang
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, pelanggan $pelanggan)
+    public function update(Request $request, barang $barang)
     {
         //
     }
@@ -126,13 +134,13 @@ class PelangganController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\pelanggan  $pelanggan
+     * @param  \App\Models\barang  $barang
      * @return \Illuminate\Http\Response
      */
     public function hapus($id)
     {
-        $pelanggan = Pelanggan::find($id);
-        $pelanggan->delete();
-        return response()->json($pelanggan);
+        $barang = Barang::find($id);
+        $barang->delete();
+        return response()->json($barang);
     }
 }

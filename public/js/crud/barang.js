@@ -5,8 +5,8 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });  
-//Tabel pelanggan
-    var table = $('.table-pelanggan').DataTable({
+//Tabel barang
+    var table = $('.table-barang').DataTable({
         "lengthMenu": [
             [ 25, 50, 100, 1000, -1 ],
             [ '25', '50', '100', '1000', 'All' ]
@@ -19,47 +19,46 @@ $(function () {
         ajax: "",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'nama_pelanggan', name: 'nama_pelanggan'},
-            {data: 'jk', name: 'jk'},
-            {data: 'no_telp', name: 'no_telp'},
-            {data: 'alamat', name: 'alamat'},
+            {data: 'supplier', name: 'supplier'},
+            {data: 'nama_barang', name: 'nama_barang'},
+            {data: 'harga', name: 'harga'},
+            {data: 'stok_barang', name: 'stok_barang'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
 
-//CREATE pelanggan
+//CREATE barang
     $('#create').click(function () {
-        $('#saveBtn').val("create-pelanggan");
+        $('#saveBtn').val("create-barang");
         $('#id').val('');
         $('#formCreate').trigger("reset");
-        $('#modelHeading').html("Tambah Pelanggan");
+        $('#modelHeading').html("Tambah barang");
         $('#modalCreate').modal('show');
         $('#modalCreate').appendTo('body');
         $('#formCreate').find('.help-block').remove();
         $('#formCreate').find('.col-sm-9').removeClass('.has-error');
     });
 
-//EDIT pelanggan
+//EDIT barang
     $('body').on('click', '.edit', function () {
         var id = $(this).data('id');
-        $.get("pelanggan" +'/' + id +'/edit', function (data) {
-            $('#modelHeading').html("Edit Pelanggan");
-                $('#saveBtn').val("edit-pelanggan");
+        $.get("barang" +'/' + id +'/edit', function (data) {
+            $('#modelHeading').html("Edit barang");
+                $('#saveBtn').val("edit-barang");
                 $('#modalCreate').modal('show');
                 $('#modalCreate').appendTo('body');
                 $('#formCreate').find('.help-block').remove();
                 $('#formCreate').find('.col-sm-9').removeClass('.has-error');
                 $('#id').val(data.id);
-                $('#nama_pelanggan').val(data.nama_pelanggan);
-                $("input[value='"+data.jk+"']").prop('checked', true);
-                $('#jk').val(data.jk);
-                $('#no_telp').val(data.no_telp);
-                $('#alamat').val(data.alamat);
+                $('#nama_barang').val(data.nama_barang);
+                $('#supplier_id').val(data.supplier_id);
+                $('#harga').val(data.harga);
+                $('#stok_barang').val(data.stok_barang);
         })
     });
 
 
-//SAVE & UPDATE pelanggan
+//SAVE & UPDATE barang
     $('#saveBtn').click(function (e) {
         e.preventDefault();
         $('#formCreate').find('.help-block').remove();
@@ -67,7 +66,7 @@ $(function () {
         $(this).html('Menyimpan..');
         $.ajax({
             data: $('#formCreate').serialize(),
-            url: "pelanggan",
+            url: "barang",
             type: "POST",
             dataType: 'json',
             success: function (data) {
@@ -77,7 +76,7 @@ $(function () {
                         $('#modalCreate').modal('hide');
                         $('#saveBtn').html('<i class="metismenu-icon pe-7s-paper-plane"></i> Simpan');
                         table.draw();
-                        toastr.success('Berhasil Menyimpan Pelanggan', 'Success !'),(data.success);
+                        toastr.success('Berhasil Menyimpan barang', 'Success !'),(data.success);
                     }else{
                         printErrorMsg(data.error);
                     }
@@ -89,7 +88,7 @@ $(function () {
         });
     });
 
-//DELETE pelanggan
+//DELETE barang
     $('body').on('click', '.delete', function (){
         var id = $(this).data("id");
         var result = Swal.fire({
@@ -101,10 +100,10 @@ $(function () {
                 if (result.isConfirmed){
                     $.ajax({
                     type: "GET",
-                    url: "hapus-pelanggan"+'/'+id,
+                    url: "hapus-barang"+'/'+id,
                     success: function (data) {
                         table.draw();
-                        toastr.success('Berhasil Menghapus Pelanggan', 'Success !'),(data.success);
+                        toastr.success('Berhasil Menghapus barang', 'Success !'),(data.success);
                         $('#formCreate').find('.help-block').remove();
                         $('#formCreate').find('.col-sm-9').removeClass('.has-error');
                     },

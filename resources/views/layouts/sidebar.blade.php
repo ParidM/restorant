@@ -46,6 +46,30 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('supplier.index')}}" class="{{(request()->is('supplier*')) ? 'mm-active' : ''}}">
+                        <i class="metismenu-icon pe-7s-plugin"></i>
+                            Supplier
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('barang.index')}}" class="{{(request()->is('barang')) ? 'mm-active' : ''}}">
+                        <i class="metismenu-icon pe-7s-safe"></i>
+                            Barang
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('barang-masuk.index')}}" class="{{(request()->is('barang-masuk*')) ? 'mm-active' : ''}}">
+                        <i class="metismenu-icon pe-7s-download"></i>
+                            Barang Masuk
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('transaksi.index')}}" class="{{(request()->is('transaksi*')) ? 'mm-active' : ''}}">
+                        <i class="metismenu-icon pe-7s-upload"></i>
+                            Transaksi
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();"><i class="metismenu-icon pe-7s-power"></i>Keluar</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

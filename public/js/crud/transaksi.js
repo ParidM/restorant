@@ -5,8 +5,8 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });  
-//Tabel pelanggan
-    var table = $('.table-pelanggan').DataTable({
+//Tabel transaksi
+    var table = $('.table-transaksi').DataTable({
         "lengthMenu": [
             [ 25, 50, 100, 1000, -1 ],
             [ '25', '50', '100', '1000', 'All' ]
@@ -19,47 +19,46 @@ $(function () {
         ajax: "",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'nama_pelanggan', name: 'nama_pelanggan'},
-            {data: 'jk', name: 'jk'},
-            {data: 'no_telp', name: 'no_telp'},
-            {data: 'alamat', name: 'alamat'},
+            {data: 'pelanggan', name: 'pelanggan'},
+            {data: 'barang', name: 'barang'},
+            {data: 'tanggal', name: 'tanggal'},
+            {data: 'jumlah', name: 'jumlah'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
 
-//CREATE pelanggan
+//CREATE transaksi
     $('#create').click(function () {
-        $('#saveBtn').val("create-pelanggan");
+        $('#saveBtn').val("create-transaksi");
         $('#id').val('');
         $('#formCreate').trigger("reset");
-        $('#modelHeading').html("Tambah Pelanggan");
+        $('#modelHeading').html("Tambah transaksi");
         $('#modalCreate').modal('show');
         $('#modalCreate').appendTo('body');
         $('#formCreate').find('.help-block').remove();
         $('#formCreate').find('.col-sm-9').removeClass('.has-error');
     });
 
-//EDIT pelanggan
+//EDIT transaksi
     $('body').on('click', '.edit', function () {
         var id = $(this).data('id');
-        $.get("pelanggan" +'/' + id +'/edit', function (data) {
-            $('#modelHeading').html("Edit Pelanggan");
-                $('#saveBtn').val("edit-pelanggan");
+        $.get("transaksi" +'/' + id +'/edit', function (data) {
+            $('#modelHeading').html("Edit transaksi");
+                $('#saveBtn').val("edit-transaksi");
                 $('#modalCreate').modal('show');
                 $('#modalCreate').appendTo('body');
                 $('#formCreate').find('.help-block').remove();
                 $('#formCreate').find('.col-sm-9').removeClass('.has-error');
                 $('#id').val(data.id);
-                $('#nama_pelanggan').val(data.nama_pelanggan);
-                $("input[value='"+data.jk+"']").prop('checked', true);
-                $('#jk').val(data.jk);
-                $('#no_telp').val(data.no_telp);
-                $('#alamat').val(data.alamat);
+                $('#barang_id').val(data.barang_id);
+                $('#pelanggan_id').val(data.pelanggan_id);
+                $('#tanggal').val(data.tanggal);
+                $('#jumlah').val(data.jumlah);
         })
     });
 
 
-//SAVE & UPDATE pelanggan
+//SAVE & UPDATE transaksi
     $('#saveBtn').click(function (e) {
         e.preventDefault();
         $('#formCreate').find('.help-block').remove();
@@ -67,7 +66,7 @@ $(function () {
         $(this).html('Menyimpan..');
         $.ajax({
             data: $('#formCreate').serialize(),
-            url: "pelanggan",
+            url: "transaksi",
             type: "POST",
             dataType: 'json',
             success: function (data) {
@@ -77,7 +76,7 @@ $(function () {
                         $('#modalCreate').modal('hide');
                         $('#saveBtn').html('<i class="metismenu-icon pe-7s-paper-plane"></i> Simpan');
                         table.draw();
-                        toastr.success('Berhasil Menyimpan Pelanggan', 'Success !'),(data.success);
+                        toastr.success('Berhasil Menyimpan transaksi', 'Success !'),(data.success);
                     }else{
                         printErrorMsg(data.error);
                     }
@@ -89,7 +88,7 @@ $(function () {
         });
     });
 
-//DELETE pelanggan
+//DELETE transaksi
     $('body').on('click', '.delete', function (){
         var id = $(this).data("id");
         var result = Swal.fire({
@@ -101,10 +100,10 @@ $(function () {
                 if (result.isConfirmed){
                     $.ajax({
                     type: "GET",
-                    url: "hapus-pelanggan"+'/'+id,
+                    url: "hapus-transaksi"+'/'+id,
                     success: function (data) {
                         table.draw();
-                        toastr.success('Berhasil Menghapus Pelanggan', 'Success !'),(data.success);
+                        toastr.success('Berhasil Menghapus transaksi', 'Success !'),(data.success);
                         $('#formCreate').find('.help-block').remove();
                         $('#formCreate').find('.col-sm-9').removeClass('.has-error');
                     },

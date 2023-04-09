@@ -8,19 +8,9 @@
                 <form id="formCreate" name="formCreate" class="form-horizontal">
                     <div class="form-group">
                     <input type="hidden" name="id" id="id">
-                        <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="nama">Nama Pelanggan</label>
-                            <div class="col-sm-9"><input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" placeholder="Masukan Nama" value="" maxlength="50" required="">
+                        <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="nama">Nama Supplier</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" id="nama_supplier" name="nama_supplier" placeholder="Masukan Nama" value="" maxlength="50" required="">
                                 </div>
-                        </div>
-                        <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="">Jenis Kelamin</label>
-                            <div class="col-sm-9">
-                                <div>
-                                    <div class="custom-radio custom-control custom-control-inline jk"><input type="radio" id="Laki-Laki" value="L" name="jk" id="jk" class="custom-control-input"><label class="custom-control-label"
-                                        for="Laki-Laki">Laki-Laki</label></div>
-                                    <div class="custom-radio custom-control custom-control-inline jk"><input type="radio" id="Perempuan" Value="P" name="jk" id="jk" class="custom-control-input"><label class="custom-control-label"
-                                        for="Perempuan">Perempuan</label></div>
-                                </div>
-                            </div>
                         </div>
                         <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="no_telp">No Telepon</label>
                             <div class="col-sm-9"><input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Masukan No Telepon" value="" maxlength="50" required="">

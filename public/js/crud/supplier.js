@@ -5,8 +5,8 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });  
-//Tabel pelanggan
-    var table = $('.table-pelanggan').DataTable({
+//Tabel supplier
+    var table = $('.table-supplier').DataTable({
         "lengthMenu": [
             [ 25, 50, 100, 1000, -1 ],
             [ '25', '50', '100', '1000', 'All' ]
@@ -19,47 +19,44 @@ $(function () {
         ajax: "",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'nama_pelanggan', name: 'nama_pelanggan'},
-            {data: 'jk', name: 'jk'},
+            {data: 'nama_supplier', name: 'nama_supplier'},
             {data: 'no_telp', name: 'no_telp'},
             {data: 'alamat', name: 'alamat'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
 
-//CREATE pelanggan
+//CREATE supplier
     $('#create').click(function () {
-        $('#saveBtn').val("create-pelanggan");
+        $('#saveBtn').val("create-supplier");
         $('#id').val('');
         $('#formCreate').trigger("reset");
-        $('#modelHeading').html("Tambah Pelanggan");
+        $('#modelHeading').html("Tambah supplier");
         $('#modalCreate').modal('show');
         $('#modalCreate').appendTo('body');
         $('#formCreate').find('.help-block').remove();
         $('#formCreate').find('.col-sm-9').removeClass('.has-error');
     });
 
-//EDIT pelanggan
+//EDIT supplier
     $('body').on('click', '.edit', function () {
         var id = $(this).data('id');
-        $.get("pelanggan" +'/' + id +'/edit', function (data) {
-            $('#modelHeading').html("Edit Pelanggan");
-                $('#saveBtn').val("edit-pelanggan");
+        $.get("supplier" +'/' + id +'/edit', function (data) {
+            $('#modelHeading').html("Edit supplier");
+                $('#saveBtn').val("edit-supplier");
                 $('#modalCreate').modal('show');
                 $('#modalCreate').appendTo('body');
                 $('#formCreate').find('.help-block').remove();
                 $('#formCreate').find('.col-sm-9').removeClass('.has-error');
                 $('#id').val(data.id);
-                $('#nama_pelanggan').val(data.nama_pelanggan);
-                $("input[value='"+data.jk+"']").prop('checked', true);
-                $('#jk').val(data.jk);
+                $('#nama_supplier').val(data.nama_supplier);
                 $('#no_telp').val(data.no_telp);
                 $('#alamat').val(data.alamat);
         })
     });
 
 
-//SAVE & UPDATE pelanggan
+//SAVE & UPDATE supplier
     $('#saveBtn').click(function (e) {
         e.preventDefault();
         $('#formCreate').find('.help-block').remove();
@@ -67,7 +64,7 @@ $(function () {
         $(this).html('Menyimpan..');
         $.ajax({
             data: $('#formCreate').serialize(),
-            url: "pelanggan",
+            url: "supplier",
             type: "POST",
             dataType: 'json',
             success: function (data) {
@@ -77,7 +74,7 @@ $(function () {
                         $('#modalCreate').modal('hide');
                         $('#saveBtn').html('<i class="metismenu-icon pe-7s-paper-plane"></i> Simpan');
                         table.draw();
-                        toastr.success('Berhasil Menyimpan Pelanggan', 'Success !'),(data.success);
+                        toastr.success('Berhasil Menyimpan supplier', 'Success !'),(data.success);
                     }else{
                         printErrorMsg(data.error);
                     }
@@ -89,7 +86,7 @@ $(function () {
         });
     });
 
-//DELETE pelanggan
+//DELETE supplier
     $('body').on('click', '.delete', function (){
         var id = $(this).data("id");
         var result = Swal.fire({
@@ -101,10 +98,10 @@ $(function () {
                 if (result.isConfirmed){
                     $.ajax({
                     type: "GET",
-                    url: "hapus-pelanggan"+'/'+id,
+                    url: "hapus-supplier"+'/'+id,
                     success: function (data) {
                         table.draw();
-                        toastr.success('Berhasil Menghapus Pelanggan', 'Success !'),(data.success);
+                        toastr.success('Berhasil Menghapus supplier', 'Success !'),(data.success);
                         $('#formCreate').find('.help-block').remove();
                         $('#formCreate').find('.col-sm-9').removeClass('.has-error');
                     },
