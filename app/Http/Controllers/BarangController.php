@@ -7,6 +7,7 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
+use AutoNumber;
 
 class BarangController extends Controller
 {

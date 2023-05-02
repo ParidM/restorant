@@ -7,6 +7,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::get('/', function () {
 });
 
 Route::resource('/pelanggan', PelangganController::class);
+Route::resource('/cart', CartController::class);
 Route::get('/hapus-pelanggan/{id}',[PelangganController::class,'hapus'])->name('hapus.pelanggan');
 Route::resource('/supplier', SupplierController::class);
 Route::get('/hapus-supplier/{id}',[SupplierController::class,'hapus'])->name('hapus.supplier');

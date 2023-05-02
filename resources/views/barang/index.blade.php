@@ -35,6 +35,7 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>No</th>
+                                        <th>Kode</th>
                                         <th>Supplier</th>
                                         <th>Nama Barang</th>
                                         <th>Harga</th>

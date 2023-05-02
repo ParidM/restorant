@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
+use App\Models\Supplier;
 use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 use DataTables;
@@ -27,7 +27,7 @@ class BarangMasukController extends Controller
      */
     public function index(Request $request)
     {
-        $barang = Barang::pluck('nama_barang','id');
+        $supplier = Supplier::All();
         if ($request->ajax()) {
             $data = BarangMasuk::all();
             return DataTables::of($data)
@@ -44,7 +44,7 @@ class BarangMasukController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
             }
-        return view('barangMasuk.index', compact('barang'));
+        return view('barangMasuk.index', compact('supplier'));
     }
 
     /**
@@ -96,8 +96,8 @@ class BarangMasukController extends Controller
      */
     public function show($id)
     {
-        $BarangMasuk = BarangMasuk::find($id);
-        return view('BarangMasuk.show', compact('BarangMasuk'));
+        $supplier = Supplier::findOrFail($id);
+        return view('BarangMasuk.show', compact('supplier'));
     }
 
     /**

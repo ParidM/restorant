@@ -31,7 +31,7 @@ $(function () {
         $('#saveBtn').val("create-barang-masuk");
         $('#id').val('');
         $('#formCreate').trigger("reset");
-        $('#modelHeading').html("Tambah barang-masuk");
+        $('#modelHeading').html("Pilih Supplier Terlebih Dahulu");
         $('#modalCreate').modal('show');
         $('#modalCreate').appendTo('body');
         $('#formCreate').find('.help-block').remove();

@@ -35,6 +35,7 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>No</th>
+                                        <th>Kode</th>
                                         <th>Nama Pelanggan</th>
                                         <th>JK</th>
                                         <th>No Telepon</th>
