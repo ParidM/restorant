@@ -22,7 +22,8 @@ $(function () {
             {data: 'kode', name: 'kode'},
             {data: 'supplier', name: 'supplier'},
             {data: 'nama_barang', name: 'nama_barang'},
-            {data: 'harga', name: 'harga'},
+            {data: 'harga_beli', name: 'harga_beli'},
+            {data: 'harga_jual', name: 'harga_jual'},
             {data: 'stok_barang', name: 'stok_barang'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
@@ -53,7 +54,8 @@ $(function () {
                 $('#id').val(data.id);
                 $('#nama_barang').val(data.nama_barang);
                 $('#supplier_id').val(data.supplier_id);
-                $('#harga').val(data.harga);
+                $('#harga_beli').val(data.harga_beli);
+                $('#harga_jual').val(data.harga_jual);
                 $('#stok_barang').val(data.stok_barang);
         })
     });

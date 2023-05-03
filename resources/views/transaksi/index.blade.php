@@ -25,7 +25,7 @@
             <div class="mb-3 card">
                 <div class="card-header-tab card-header-tab-animation card-header">
                     <div class="card-header-title">
-                        <a class="btn btn-success" href="javascript:void(0)" id="create"><i class="metismenu-icon pe-7s-note2"></i> Tambah</a>
+                        <a class="btn btn-success" href="{{route('transaksi.create')}}" id=""><i class="metismenu-icon pe-7s-note2"></i> Tambah</a>
                     </div>
                 </div>
                 <div class="card-body">

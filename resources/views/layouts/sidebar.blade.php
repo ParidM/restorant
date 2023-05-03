@@ -52,6 +52,27 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#" class="{{(request()->is('penerima','penerima-thr*')) ? 'mm-active' : ''}}">
+                        <i class="metismenu-icon pe-7s-cash"></i>
+                           Update Harga
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul class="{{(request()->is('penerima','penerima-thr*')) ? 'mm-show' : ''}}">
+                        <li>
+                            <a href="#" class="{{(request()->is('penerima')) ? 'mm-active' : ''}}">
+                                <i class="metismenu-icon pe-7s-mail-open-file"></i>
+                                    Harga Beli
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="{{(request()->is('penerima-thr*')) ? 'mm-active' : ''}}">
+                                <i class="metismenu-icon pe-7s-mail-open-file"></i>
+                                    Harga Jual
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
                     <a href="{{route('barang.index')}}" class="{{(request()->is('barang')) ? 'mm-active' : ''}}">
                         <i class="metismenu-icon pe-7s-safe"></i>
                             Barang

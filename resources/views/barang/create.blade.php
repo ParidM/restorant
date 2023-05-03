@@ -22,8 +22,12 @@
                             <div class="col-sm-9"><input type="text" class="form-control" id="nama_barang" name="nama_barang" placeholder="Masukan Nama" value="" maxlength="50" required="">
                                 </div>
                         </div>
-                        <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="harga">Harga</label>
-                            <div class="col-sm-9"><input type="number" class="form-control" id="harga" name="harga" placeholder="Masukan No Telepon" value="" maxlength="50" required="">
+                        <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="harga_beli">Harga Beli</label>
+                            <div class="col-sm-9"><input type="number" class="form-control" id="harga_beli" name="harga_beli" placeholder="Masukan Harga Beli" value="" maxlength="50" required="">
+                                </div>
+                        </div>
+                        <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="harga_jual">Harga Jual</label>
+                            <div class="col-sm-9"><input type="number" class="form-control" id="harga_jual" name="harga_jual" placeholder="Masukan Harga Jual" value="" maxlength="50" required="">
                                 </div>
                         </div>
                         <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="stok_barang">Stok Barang</label>

@@ -42,8 +42,11 @@ class BarangController extends Controller
                 ->addColumn('supplier', function($data){
                     return $data->supplier->nama_supplier;
                 })
-                ->addColumn('harga', function($data){
-                    return "Rp. ".number_format($data->harga);
+                ->addColumn('harga_beli', function($data){
+                    return "Rp. ".number_format($data->harga_beli);
+                })
+                ->addColumn('harga_jual', function($data){
+                    return "Rp. ".number_format($data->harga_jual);
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -72,12 +75,14 @@ class BarangController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_barang' => 'required',
             'supplier_id' => 'required',
-            'harga' => 'required',
+            'harga_beli' => 'required',
+            'harga_jual' => 'required',
             'stok_barang' => 'required',
         ], $messages = [
             'nama_barang.required' => 'Kolom Nama barang Wajib Diisi',
             'supplier_id.required' => 'Kolom No. Telepon Beli Wajib Diisi',
-            'harga.required' => 'Kolom Alamat Wajib Diisi',
+            'harga_beli.required' => 'Kolom Harga Beli Wajib Diisi',
+            'harga_jual.required' => 'Kolom Harga Jual Wajib Diisi',
             'stok_barang.required' => 'Kolom Alamat Wajib Diisi',
         ]);
         if($validator->passes()) {
@@ -86,7 +91,8 @@ class BarangController extends Controller
                 [
                     'nama_barang' => $request->nama_barang,
                     'supplier_id' => $request->supplier_id,
-                    'harga' => $request->harga,
+                    'harga_beli' => $request->harga_beli,
+                    'harga_jual' => $request->harga_jual,
                     'stok_barang' => $request->stok_barang,
                 ]
             );

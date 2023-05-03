@@ -11,7 +11,7 @@ class Barang extends Model
     use HasFactory, AutoNumberTrait;
     protected $table = "barang";
     protected $fillable = [
-        'supplier_id','nama_barang','harga','stok_barang',
+        'supplier_id','nama_barang','harga_beli','harga_jual','stok_barang',
     ];
 
     public function supplier(){

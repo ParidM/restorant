@@ -38,7 +38,8 @@
                                         <th>Kode</th>
                                         <th>Supplier</th>
                                         <th>Nama Barang</th>
-                                        <th>Harga</th>
+                                        <th>Harga Beli</th>
+                                        <th>Harga Jual</th>
                                         <th>Stok</th>
                                         <th>Aksi</th>
                                     </tr>

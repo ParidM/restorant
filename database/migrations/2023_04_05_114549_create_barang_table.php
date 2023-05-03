@@ -18,7 +18,8 @@ class CreateBarangTable extends Migration
             $table->string('kode');
             $table->unsignedBigInteger('supplier_id');
             $table->string('nama_barang');
-            $table->integer('harga');
+            $table->integer('harga_beli');
+            $table->integer('harga_jual');
             $table->integer('stok_barang');
             $table->timestamps();
             

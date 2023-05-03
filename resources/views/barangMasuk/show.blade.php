@@ -30,95 +30,69 @@
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
-                    <div class="row">
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="row mb-2">
-                <div class="col">
-                    <form class="d-flex">
-                        <input
-                            type="text"
-                            class="form-control productCode"
-                            placeholder="Scan Barcode..."
-                        />
-                        <button class="btn btn-sm rounded btn-success scan">Find</button>
-                    </form>
-                </div>
-            </div>
-            <div class="user-cart">
-                <div class="card">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th class="text-right">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <form action="#" method="post">
-                @csrf 
-                <div class="row mt-2">
-                    <div class="col">Total:</div>
-                    <div class="col text-right">
-                        <input type="number" value="" name="total" readonly class="form-control total">
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col">Diterima:</div>
-                    <div class="col text-right">
-                        <input type="number" value="" name="accept" class="form-control received">
-                    </div>
-                </div>
-                <div class="row my-2">
-                    <div class="col">Return:</div>
-                    <div class="col text-right"> 
-                        <input type="number" value="" name="return" readonly class="form-control return">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button
-                            type="button"
-                            class="btn btn-danger btn-block"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button
-                            type="submit"
-                            class="btn btn-primary btn-block"
-                        >
-                            Pay
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-6 col-lg-8">
-            <div class="mb-2">
-                <input
-                    type="text"
-                    class="form-control search"
-                    placeholder="Search Product..."
-                />
-            </div>
-            <div class="order-product product-search" style="display: flex;column-gap: 0.5rem;flex-wrap: wrap;row-gap: .5rem;">
-                    <button type="button"
-                        class="item"
-                        style="cursor: pointer; border: none;"
-                        value="#">
-                        <img src="#" width="45px" height="45px" alt="test" />
-                        <h6 style="margin: 0;">#</h6>
-                        <span ></span>
-                    </button>
-            </div>
-        </div>
-    </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <select name="" class="form-control" id="">
+                                    <option value="">-- Silahkan Pilih Produk --</option>
+                                </select>
+                                <table id="myTable2" class="table table-hover">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>No</th>
+                                            <th>Nama Barang</th>
+                                            <th>Jumlah</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="text-center">Belum ada data yang dipilih</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-4">
+                                <form action="#" method="post">
+                                    @csrf 
+                                    <div class="row mt-2">
+                                        <div class="col">Total:</div>
+                                        <div class="col text-right">
+                                            <input type="number" value="" name="total" readonly class="form-control total">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col">Diterima:</div>
+                                        <div class="col text-right">
+                                            <input type="number" value="" name="accept" class="form-control received">
+                                        </div>
+                                    </div>
+                                    <div class="row my-2">
+                                        <div class="col">Kembali:</div>
+                                        <div class="col text-right"> 
+                                            <input type="number" value="" name="return" readonly class="form-control return">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <button
+                                                type="button"
+                                                class="btn btn-danger btn-block"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                        <div class="col">
+                                            <button
+                                                type="submit"
+                                                class="btn btn-primary btn-block"
+                                            >
+                                                Pay
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div> 
             </div>
