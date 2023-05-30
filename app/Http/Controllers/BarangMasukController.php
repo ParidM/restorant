@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use App\Models\BarangMasuk;
+use App\Models\Barang;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
@@ -97,7 +98,9 @@ class BarangMasukController extends Controller
     public function show($id)
     {
         $supplier = Supplier::findOrFail($id);
-        return view('BarangMasuk.show', compact('supplier'));
+        
+        $barang = Barang::where('supplier_id',$id)->get();
+        return view('BarangMasuk.show', compact('barang','supplier'));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Barang;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -14,13 +15,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $carts = Cart::all();
 
-        return response()->json([
-            'status' => 200,
-            'carts' => $carts,
-            'message' => 'success',
-        ]);
     }
 
     /**
@@ -41,7 +36,23 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barangId = $request->input('barang_id');
+        // Lakukan validasi jika diperlukan
+
+        // Dapatkan data barang berdasarkan ID
+        $barang = Barang::find($barangId);
+
+        if (!$barang) {
+            return response()->json(['success' => false]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'barang' => [
+                'nama' => $barang->nama_barang,
+                'harga' => $barang->harga_jual
+            ]
+        ]);
     }
 
     /**
