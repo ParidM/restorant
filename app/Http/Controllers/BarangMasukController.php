@@ -6,6 +6,7 @@ use App\Models\Supplier;
 use App\Models\BarangMasuk;
 use App\Models\Barang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use DataTables;
 use Validator;
 
@@ -66,27 +67,13 @@ class BarangMasukController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'barang_id' => 'required',
-            'tanggal' => 'required',
-            'jumlah' => 'required',
-        ], $messages = [
-            'barang_id.required' => 'Kolom Nama Supplier Wajib Diisi',
-            'tanggal.required' => 'Kolom No. Telepon Beli Wajib Diisi',
-            'jumlah.required' => 'Kolom Alamat Wajib Diisi',
+        $barangMasuk = BarangMasuk::create([
+            'kode'     => $request->kode,
+            'user_id'  => Auth::user()->id,
+            'total'    => $request->total,
+            'diterima' => $request->diterima,
+            'kembali'  => $request->kembali,
         ]);
-        if($validator->passes()) {
-            $nama = BarangMasuk::updateOrCreate(
-                ['id' => $request->id],
-                [
-                    'barang_id' => $request->barang_id,
-                    'tanggal' => $request->tanggal,
-                    'jumlah' => $request->jumlah,
-                ]
-            );
-            return response()->json($nama);
-        }
-        return response()->json(['error'=>$validator->errors()]);
     }
 
     /**

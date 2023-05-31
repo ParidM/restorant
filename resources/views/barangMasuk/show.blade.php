@@ -38,14 +38,14 @@
                                             <option value="{{ $item->id }}" class="item" data-nama="{{ $item->nama_barang }}" data-harga="{{ $item->harga_jual }}">{{ $item->nama_barang }}</option>
                                         @endforeach
                                 </select>
-                                <table class="table table-hover" id="cart_table">
+                                <table class="table table-hover table-striped" id="cart_table">
                                     <thead>
                                         <tr class="text-center">
-                                            <th>No</th>
-                                            <th>Nama Barang</th>
-                                            <th>Jumlah</th>
-                                            <th>Subtotal</th>
-                                            <th>Aksi</th>
+                                            <th width="20%">Nama Barang</th>
+                                            <th width="15%">Harga</th>
+                                            <th width="10%">Jumlah</th>
+                                            <th width="20%">Subtotal</th>
+                                            <th width="10%">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -53,54 +53,28 @@
                                 </table>
                             </div>
                             <div class="col-md-4">
-                                <!-- Tambahkan input textbox untuk nilai terima -->
-<input type="text" id="nilai_terima" class="form-control" onchange="hitungKembalian()">
-
-<!-- Tambahkan input textbox untuk total keseluruhan -->
-<input type="text" id="total_keseluruhan" class="form-control" readonly>
-
-<!-- Tambahkan input textbox untuk nilai kembalian -->
-<input type="text" id="nilai_kembalian" class="form-control" readonly>
-                                <form action="#" method="post">
-                                    @csrf 
-                                    <div class="row mt-2">
-                                        <div class="col">Total:</div>
-                                        <div class="col text-right">
-                                            <input type="number" value="" name="total" id="total_keseluruhan" readonly class="form-control total">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col">Diterima:</div>
-                                        <div class="col text-right">
-                                            <input type="number" value="" name="accept" id="terima" class="form-control received">
-                                        </div>
-                                    </div>
-                                    <div class="row my-2">
-                                        <div class="col">Kembali:</div>
-                                        <div class="col text-right"> 
-                                            <input type="number" value="" name="return" id="total" readonly class="form-control return">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <button
-                                                type="button"
-                                                class="btn btn-danger btn-block"
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                        
-                                        <div class="col">
-                                            <button
-                                                type="submit"
-                                                class="btn btn-primary btn-block"
-                                            >
-                                                Pay
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                            <form action="{{route('barang-masuk.store')}}" method="POST">
+                                @csrf
+                                <table class="table">
+                                    <tr>
+                                        <td>Total :</td>
+                                        <td><input type="text" name="total" id="total_keseluruhan" class="form-control" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diterima :</td>
+                                        <td><input type="text" name="diterima" id="nilai_terima" class="form-control" onchange="hitungKembalian()"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kembalian</td>
+                                        <td><input type="text" name="kembali" id="nilai_kembalian" class="form-control" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-block">Simpan</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -142,7 +116,7 @@
                         '<td>' + response.barang.nama + '</td>' +
                         '<td>' + response.barang.harga + '</td>' +
                         '<td><input type="number" class="form-control quantity_input"></td>' +
-                        '<td>Rp' + parseInt(response.barang.harga).toLocaleString('id-ID') + '</td>' +
+                        '<td>' + response.barang.harga + '</td>' +
                         '<td><button class="btn btn-danger btn-sm delete_row">Hapus</button></td>' +
                         '</tr>';
                     $('#cart_table tbody').append(row);
@@ -163,7 +137,7 @@
         var totalKeseluruhan = 0;
         $('.quantity_input').each(function () {
             var row = $(this).closest('tr');
-            var harga = parseInt(row.find('td:nth-child(2)').text());
+            var harga = parseFloat(row.find('td:nth-child(2)').text()); // Menggunakan parseFloat() untuk mempertahankan digit nol di depan
             var kuantitas = parseInt($(this).val());
             var total = harga * kuantitas;
 
@@ -171,7 +145,7 @@
                 totalKeseluruhan += total;
             }
         });
-        $('#total_keseluruhan').val(totalKeseluruhan.toLocaleString('id-ID'));
+        $('#total_keseluruhan').val(totalKeseluruhan);
         hitungKembalian();
     }
 
@@ -181,7 +155,7 @@
         var kuantitas = parseInt($(this).val());
         var total = harga * kuantitas;
 
-        row.find('td:nth-child(4)').text('Rp ' + total.toLocaleString('id-ID'));
+        row.find('td:nth-child(4)').text(total);
 
         updateTotalKeseluruhan();
     });
@@ -203,22 +177,22 @@
 
         row.remove();
 
-        updateTotalKeseluruhan(); 
+        updateTotalKeseluruhan();
     });
-    
+
     function hitungKembalian() {
-        var totalKeseluruhan = parseInt($('#total_keseluruhan').val().replace('Rp', '').replace(',', ''));
-        var nilaiTerima = parseInt($('#nilai_terima').val().replace('Rp', '').replace(',', ''));
+        var totalKeseluruhan = parseInt($('#total_keseluruhan').val());
+        var nilaiTerima = parseInt($('#nilai_terima').val());
 
         if (isNaN(nilaiTerima)) {
-        nilaiTerima = 0;
+            nilaiTerima = 0;
         }
 
         var kembalian = nilaiTerima - totalKeseluruhan;
 
-        // Menyisipkan format rupiah pada nilai kembalian
-        $('#nilai_kembalian').val('Rp ' + kembalian.toLocaleString('id-ID'));
+        $('#nilai_kembalian').val(kembalian);
     }
 </script>
+
 
 @endsection
