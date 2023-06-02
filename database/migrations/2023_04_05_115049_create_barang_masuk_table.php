@@ -22,7 +22,7 @@ class CreateBarangMasukTable extends Migration
             $table->integer('kembali');
             $table->timestamps();
             
-            $table->foreign('user_id')->references('id')->on('barang');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -12,9 +12,9 @@
                 <div class="page-title-icon">
                     <i class="pe-7s-wallet icon-gradient bg-mean-fruit"></i>
                 </div>
-                <div>Transaksi
+                <div>Transaksi Pelanggan
                     <div class="page-title-subheading">
-                        melakukan transaksi pelanggan
+                        menu untuk melakukan transaksi dengan pelanggan
                     </div>
                 </div>
             </div>
@@ -32,68 +32,55 @@
                     <div class="tab-content">
                         <div class="row">
                             <div class="col-md-8">
-                                <select name="" class="form-control" id="">
-                                    <option value="">-- Silahkan Pilih Nama Pelanggan --</option>
+                                <form action="{{route('transaksi.store')}}" method="POST">
+                                @csrf
+                                <select name="pelanggan_id" id="pelanggan_id" class="form-control">
+                                    <option disable="true" selected="true" disabled>--- Pilih Pelanggan ---</option>
+                                        @foreach ($pelanggan as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama_pelanggan }}</option>
+                                        @endforeach
                                 </select>
-                                <select name="" class="form-control mt-2" id="">
-                                    <option value="">-- Silahkan Pilih Produk --</option>
+                                <select name="barang_id" id="barang_id" class="form-control mt-2">
+                                    <option disable="true" selected="true" disabled>--- Pilih Barang ---</option>
+                                        @foreach ($barang as $item)
+                                            <option value="{{ $item->id }}" class="item" data-nama="{{ $item->nama_barang }}" data-harga="{{ $item->harga_jual }}">{{ $item->nama_barang }}</option>
+                                        @endforeach
                                 </select>
-                                <table id="myTable2" class="table table-hover">
+                                <table class="table table-hover table-striped mt-2" id="cart_table">
                                     <thead>
                                         <tr class="text-center">
-                                            <th>No</th>
-                                            <th>Nama Barang</th>
-                                            <th>Jumlah</th>
-                                            <th>Subtotal</th>
+                                            <th width="20%">Nama Barang</th>
+                                            <th width="15%">Harga</th>
+                                            <th width="10%">Jumlah</th>
+                                            <th width="20%">Subtotal</th>
+                                            <th width="10%">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td colspan="4" class="text-center">Belum ada data yang dipilih</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-md-4">
-                                <form action="#" method="post">
-                                    @csrf 
-                                    <div class="row mt-2">
-                                        <div class="col">Total:</div>
-                                        <div class="col text-right">
-                                            <input type="number" value="" name="total" readonly class="form-control total">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col">Diterima:</div>
-                                        <div class="col text-right">
-                                            <input type="number" value="" name="accept" class="form-control received">
-                                        </div>
-                                    </div>
-                                    <div class="row my-2">
-                                        <div class="col">Kembali:</div>
-                                        <div class="col text-right"> 
-                                            <input type="number" value="" name="return" readonly class="form-control return">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <button
-                                                type="button"
-                                                class="btn btn-danger btn-block"
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                        <div class="col">
-                                            <button
-                                                type="submit"
-                                                class="btn btn-primary btn-block"
-                                            >
-                                                Pay
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <table class="table">
+                                    <tr>
+                                        <td>Total :</td>
+                                        <td><input type="text" name="total" id="total_keseluruhan" class="form-control" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diterima :</td>
+                                        <td><input type="text" name="diterima" id="nilai_terima" class="form-control" onchange="hitungKembalian()"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kembalian</td>
+                                        <td><input type="text" name="kembali" id="nilai_kembalian" class="form-control" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-block">Simpan</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -103,198 +90,115 @@
     </div>
 </div>
 <script>
-         $(document).ready(function() {
+    $(document).ready(function () {
+        updateTotalKeseluruhan();
+    });
 
-                function getCarts(){
-                $.ajax({
-                    type: 'get',
-                    url: "cart",
-                    dataType: "json",
-                    success: function(response) {
-                        let total = 0;
-                        $('tbody').html("");
-                        $.each(response.carts, function(key,product) {
-                            total += product.price * product.quantity                            
-                            $('tbody').append(`
-                            <tr>
-                                <td>${product.name}</td>
-                                <td class="d-flex">
-                                    <select class="form-control qty">
-                                    ${[...Array(product.stock).keys()].map((x) => (
-                                        `<option ${product.quantity == x + 1 ? 'selected' : null} value=${x + 1}>
-                                            ${x + 1}
-                                        </option>`
-                                    ))}
-                                    </select>
-                                    <input
-                                        type="hidden"
-                                        class="cartId"
-                                        value="${product.id}"
-                                        />
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger btn-sm delete"
-                                        value="${product.id}"
-                                        
-                                    >
-                                    <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                                <td class="text-right">
-                                $${ product.quantity * product.price}
-                                </td>
-                            </tr>
-                            `)
-                        });
+    document.getElementById('barang_id').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var barangId = selectedOption.value;
+        var namaBarang = selectedOption.getAttribute('data-nama');
+        var hargaBarang = selectedOption.getAttribute('data-harga');
+        var url = "{{ route('cart.store') }}";
 
-                        const test = $('.total').attr('value', `${total}`);
-                    }
-                })
+        // Kirim data melalui AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
 
-            getCarts()
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                barang_id: barangId,
+                nama: namaBarang,
+                harga: hargaBarang
+            },
+            success: function(response) {
+                if (response.success) {
+                    var row = '<tr>' +
+                        '<td><input type="hidden" class="form-control" value="'+ response.barang.barang_id +'" name="barang_id[]">' + response.barang.nama + '</td>' +
+                        '<td><input type="hidden" class="form-control" value="'+ response.barang.harga_jual +'" name="harga[]">' + response.barang.harga_jual + '</td>' +
+                        '<td><input type="number" class="form-control quantity_input" name="kuantitas[]"></td>' +
+                        '<td>' + response.barang.harga_jual + '</td>' +
+                        '<td><button class="btn btn-danger btn-sm delete_row">Hapus</button></td>' +
+                        '</tr>';
+                    $('#cart_table tbody').append(row);
+                    console.log('Data berhasil ditambahkan ke keranjang.');
+                    selectedOption.disabled = true;
+                    updateTotalKeseluruhan(); 
+                } else {
+                    console.log('Gagal menambahkan data ke keranjang.');
+                }
+            },
+            error: function(response) {
+                console.log('Terjadi kesalahan: ' + response.responseText);
+            }
+        });
+    });
 
-            $(document).on('change', '.received', function() {
-                const received = $(this).val();
-                const total = $('.total').val();
-                const subTotal = received - total;
-                const change = $('.return').val(subTotal);            
-            })
+    function updateTotalKeseluruhan() {
+        var totalKeseluruhan = 0;
+        $('.quantity_input').each(function () {
+            var row = $(this).closest('tr');
+            var harga = parseFloat(row.find('td:nth-child(2)').text()); // Menggunakan parseFloat() untuk mempertahankan digit nol di depan
+            var kuantitas = parseInt($(this).val());
+            var total = harga * kuantitas;
 
-            $(document).on('change', '.qty', function() {
-                const qty = $(this).val();
-                const cartId = $(this).closest('td').find('.cartId').val();
-                
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                
-                $.ajax({
-                    type: 'put',
-                    url: `carts/${cartId}`,
-                    data: {
-                        qty
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if(response.status === 400){
-                            alert(response.message);
-                        }
-                        getCarts()
-                    }
-                })
-            })
+            if (!isNaN(total)) {
+                totalKeseluruhan += total;
+            }
+        });
+        $('#total_keseluruhan').val(totalKeseluruhan);
+        hitungKembalian();
+    }
 
-            $(document).on('keyup', '.search', function() {
-                const search = $(this).val();
+    $(document).on('change', '.quantity_input', function() {
+        var row = $(this).closest('tr');
+        var harga = parseInt(row.find('td:nth-child(2)').text());
+        var kuantitas = parseInt($(this).val());
+        var total = harga * kuantitas;
 
-                
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                
-                $.ajax({
-                    type: 'post',
-                    url: `products/search`,
-                    data: {
-                        search
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('.product-search').html("");
-                        $.each(response, function(key,product) {                      
-                            $('.product-search').append(`
-                            <button type="button"
-                                class="item"
-                                style="cursor: pointer; border: none;"
-                                value="${product.id}"
-                            >
-                                <img src="http://127.0.0.1:8000/storage/${product.image.id}/${product.image.file_name}" width="45px" height="45px" alt="test" />
-                               
-                                <h6 style="margin: 0;">${product.name}</h6>
-                                <span >(${product.price})</span>
-                            </button>
-                            `)
-                        });
-                    }
-                })
-            })
+        row.find('td:nth-child(4)').text(total);
 
-            $(document).on('click', '.delete', function() {
-                const cartId = $(this).val();
-                
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+        updateTotalKeseluruhan();
+    });
 
-                $.ajax({
-                    type: 'delete',
-                    url: `carts/${cartId}`,
-                    success: function(response) {
-                        if(response.status === 400){
-                            alert(response.message);
-                        }
-                        getCarts()
-                    }
-                })
-            })
+    $(document).on('click', '.delete_row', function() {
+        var row = $(this).closest('tr');
+        var namaBarang = row.find('td:first').text();
 
-            $('.scan').click(function(e) {
-                e.preventDefault();
-                const productCode = $(this).closest('form').find('.productCode').val();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+        // Tambahkan kembali opsi ke combobox
+        $('#barang_id option').each(function() {
+            if ($(this).text() === namaBarang) {
+                $(this).prop('disabled', false);
+            }
+        });
 
-                $.ajax({
-                    type: 'post',
-                    url: `carts`,
-                    data: {
-                        productCode
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if(response.status === 400 || response.status === 500){
-                            alert(response.message);
-                        }
-                        getCarts()
-                    }
-                })
-            });
+        var harga = parseInt(row.find('td:nth-child(2)').text());
+        var kuantitas = parseInt(row.find('.quantity_input').val());
+        var total = harga * kuantitas;
 
-            $(document).on('click', '.item', function() {
-                const productId = $(this).val();
+        row.remove();
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+        updateTotalKeseluruhan();
+    });
 
-                $.ajax({
-                    type: 'post',
-                    url: `carts`,
-                    data: {
-                        productId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if(response.status === 400){
-                            alert(response.message);
-                        }
-                        getCarts()
-                    }
-                })
+    function hitungKembalian() {
+        var totalKeseluruhan = parseInt($('#total_keseluruhan').val());
+        var nilaiTerima = parseInt($('#nilai_terima').val());
 
-            })
-         })
-    </script>   
+        if (isNaN(nilaiTerima)) {
+            nilaiTerima = 0;
+        }
+
+        var kembalian = nilaiTerima - totalKeseluruhan;
+
+        $('#nilai_kembalian').val(kembalian);
+    }
+</script>
+
+
 @endsection

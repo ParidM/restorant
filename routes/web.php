@@ -8,6 +8,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
+Route::get('/laporan-stok', [LaporanController::class, 'stok'])->name('laporan-stok');
+Route::get('/laporan-harga', [LaporanController::class, 'harga'])->name('laporan-harga');
 Route::resource('/pelanggan', PelangganController::class);
 Route::resource('/cart', CartController::class);
 Route::get('/hapus-pelanggan/{id}',[PelangganController::class,'hapus'])->name('hapus.pelanggan');

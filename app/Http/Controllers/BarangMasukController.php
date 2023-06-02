@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\BarangMasukDetail;
 use App\Models\BarangMasuk;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use DataTables;
 use Validator;
 
@@ -30,23 +32,9 @@ class BarangMasukController extends Controller
     public function index(Request $request)
     {
         $supplier = Supplier::All();
-        if ($request->ajax()) {
-            $data = BarangMasuk::all();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn ='<a href="#" data-toggle="tooltip" title="Edit" data-id="'.$row->id.'" data-original-title="Barcode" class="btn btn-success btn-sm barcod"><i class="metismenu-icon pe-7s-plugin"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-warning btn-sm edit"><i class="metismenu-icon pe-7s-pen"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" title="Hapus" data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm delete"><i class="metismenu-icon pe-7s-trash"></i></a>';
-                    return $btn;
-                })
-                ->addColumn('barang', function($data){
-                    return $data->barang->nama_barang;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-            }
-        return view('barangMasuk.index', compact('supplier'));
+        $data = BarangMasuk::all();
+        $detailBarang = BarangMasukDetail::all();
+        return view('barangMasuk.index', compact('supplier','data','detailBarang'));
     }
 
     /**
@@ -68,12 +56,31 @@ class BarangMasukController extends Controller
     public function store(Request $request)
     {
         $barangMasuk = BarangMasuk::create([
-            'kode'     => $request->kode,
             'user_id'  => Auth::user()->id,
             'total'    => $request->total,
             'diterima' => $request->diterima,
             'kembali'  => $request->kembali,
         ]);
+        for ($count = 0; $count < count($request->barang_id); $count++) {
+            $detail_barang = array(
+                'barang_masuk_id'  => $barangMasuk->id,
+                'barang_id'  => $request->barang_id[$count],
+                'harga'  => $request->harga[$count],
+                'kuantitas'  => $request->kuantitas[$count],
+                'total' => $request->kuantitas[$count] * $request->harga[$count],
+                'created_at'  => Carbon::now(),
+                'updated_at'  => Carbon::now(),
+            );
+            $store_data[] = $detail_barang;
+        }
+        BarangMasukDetail::insert($store_data);
+
+        for ($count = 0; $count < count($request->barang_id); $count++) {
+            $barang = Barang::findOrFail($request->barang_id[$count]);
+            $barang->stok_barang += $request->kuantitas[$count];
+            $barang->save();
+        }
+        return redirect()->route('barang-masuk.index')->with('success', 'Barang masuk berhasil disimpan');
     }
 
     /**

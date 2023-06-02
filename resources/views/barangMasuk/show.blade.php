@@ -35,9 +35,11 @@
                                 <select name="barang_id" id="barang_id" class="form-control">
                                     <option disable="true" selected="true" disabled>--- Pilih Barang ---</option>
                                         @foreach ($barang as $item)
-                                            <option value="{{ $item->id }}" class="item" data-nama="{{ $item->nama_barang }}" data-harga="{{ $item->harga_jual }}">{{ $item->nama_barang }}</option>
+                                            <option value="{{ $item->id }}" class="item" data-nama="{{ $item->nama_barang }}" data-harga="{{ $item->harga_beli }}">{{ $item->nama_barang }}</option>
                                         @endforeach
                                 </select>
+                                <form action="{{route('barang-masuk.store')}}" method="POST">
+                                @csrf
                                 <table class="table table-hover table-striped" id="cart_table">
                                     <thead>
                                         <tr class="text-center">
@@ -53,8 +55,6 @@
                                 </table>
                             </div>
                             <div class="col-md-4">
-                            <form action="{{route('barang-masuk.store')}}" method="POST">
-                                @csrf
                                 <table class="table">
                                     <tr>
                                         <td>Total :</td>
@@ -113,10 +113,10 @@
             success: function(response) {
                 if (response.success) {
                     var row = '<tr>' +
-                        '<td>' + response.barang.nama + '</td>' +
-                        '<td>' + response.barang.harga + '</td>' +
-                        '<td><input type="number" class="form-control quantity_input"></td>' +
-                        '<td>' + response.barang.harga + '</td>' +
+                        '<td><input type="hidden" class="form-control" value="'+ response.barang.barang_id +'" name="barang_id[]">' + response.barang.nama + '</td>' +
+                        '<td><input type="hidden" class="form-control" value="'+ response.barang.harga_beli +'" name="harga[]">' + response.barang.harga_beli + '</td>' +
+                        '<td><input type="number" class="form-control quantity_input" name="kuantitas[]"></td>' +
+                        '<td>' + response.barang.harga_beli + '</td>' +
                         '<td><button class="btn btn-danger btn-sm delete_row">Hapus</button></td>' +
                         '</tr>';
                     $('#cart_table tbody').append(row);
@@ -154,7 +154,11 @@
         var harga = parseInt(row.find('td:nth-child(2)').text());
         var kuantitas = parseInt($(this).val());
         var total = harga * kuantitas;
-
+        
+        if (isNaN(kuantitas) || kuantitas <= 0) {
+            $(this).val(1); // Jika kuantitas tidak valid, atur nilainya ke 1
+            kuantitas = 1;
+        }
         row.find('td:nth-child(4)').text(total);
 
         updateTotalKeseluruhan();
@@ -193,6 +197,4 @@
         $('#nilai_kembalian').val(kembalian);
     }
 </script>
-
-
 @endsection

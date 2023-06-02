@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
 use App\Models\Barang;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use DataTables;
 use Validator;
 
@@ -28,28 +31,9 @@ class TransaksiController extends Controller
      */
     public function index(Request $request)
     {
-        $pelanggan = Pelanggan::pluck('nama_pelanggan', 'id');
-        $barang = Barang::pluck('nama_barang', 'id');
-        if ($request->ajax()) {
-            $data = Transaksi::all();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn ='<a href="#" data-toggle="tooltip" title="Edit" data-id="'.$row->id.'" data-original-title="Barcode" class="btn btn-success btn-sm barcod"><i class="metismenu-icon pe-7s-plugin"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-warning btn-sm edit"><i class="metismenu-icon pe-7s-pen"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" title="Hapus" data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm delete"><i class="metismenu-icon pe-7s-trash"></i></a>';
-                    return $btn;
-                })
-                ->addColumn('barang', function($data){
-                    return $data->barang->nama_barang;
-                })
-                ->addColumn('pelanggan', function($data){
-                    return $data->pelanggan->nama_pelanggan;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-            }
-        return view('transaksi.index', compact('barang','pelanggan'));
+        $data = Transaksi::all();
+        $detailBarang = TransaksiDetail::all();
+        return view('transaksi.index', compact('data','detailBarang'));
     }
 
     /**
@@ -59,7 +43,9 @@ class TransaksiController extends Controller
      */
     public function create()
     {
-        return view('transaksi.show');
+        $pelanggan = Pelanggan::All();
+        $barang = Barang::All();
+        return view('transaksi.show', compact('pelanggan','barang'));
     }
 
     /**
@@ -70,30 +56,32 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'barang_id' => 'required',
-            'pelanggan_id' => 'required',
-            'tanggal' => 'required',
-            'jumlah' => 'required',
-        ], $messages = [
-            'barang_id.required' => 'Kolom Nama barang Wajib Diisi',
-            'pelanggan_id.required' => 'Kolom Nama barang Wajib Diisi',
-            'tanggal.required' => 'Kolom Nama barang Wajib Diisi',
-            'jumlah.required' => 'Kolom Nama barang Wajib Diisi',
+        $transaksi = Transaksi::create([
+            'user_id'  => Auth::user()->id,
+            'pelanggan_id' => $request->pelanggan_id,
+            'total'    => $request->total,
+            'diterima' => $request->diterima,
+            'kembali'  => $request->kembali,
         ]);
-        if($validator->passes()) {
-            $nama = Transaksi::updateOrCreate(
-                ['id' => $request->id],
-                [
-                    'barang_id' => $request->barang_id,
-                    'pelanggan_id' => $request->pelanggan_id,
-                    'tanggal' => $request->tanggal,
-                    'jumlah' => $request->jumlah,
-                ]
+        for ($count = 0; $count < count($request->barang_id); $count++) {
+            $detail_barang = array(
+                'transaksi_id'  => $transaksi->id,
+                'barang_id'  => $request->barang_id[$count],
+                'harga'  => $request->harga[$count],
+                'kuantitas'  => $request->kuantitas[$count],
+                'total' => $request->kuantitas[$count] * $request->harga[$count],
+                'created_at'  => Carbon::now(),
+                'updated_at'  => Carbon::now(),
             );
-            return response()->json($nama);
+            $store_data[] = $detail_barang;
         }
-        return response()->json(['error'=>$validator->errors()]);
+        TransaksiDetail::insert($store_data);
+        for ($count = 0; $count < count($request->barang_id); $count++) {
+            $barang = Barang::findOrFail($request->barang_id[$count]);
+            $barang->stok_barang -= $request->kuantitas[$count];
+            $barang->save();
+        }
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan');
     }
 
     /**

@@ -37,11 +37,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $barangId = $request->input('barang_id');
-        // Lakukan validasi jika diperlukan
-
-        // Dapatkan data barang berdasarkan ID
         $barang = Barang::find($barangId);
-
         if (!$barang) {
             return response()->json(['success' => false]);
         }
@@ -49,8 +45,10 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'barang' => [
+                'barang_id'=> $barang->id,
                 'nama' => $barang->nama_barang,
-                'harga' => $barang->harga_jual
+                'harga_beli' => $barang->harga_beli,
+                'harga_jual' => $barang->harga_jual,
             ]
         ]);
     }
