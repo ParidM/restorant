@@ -30,10 +30,8 @@
                             <div class="col-sm-9"><input type="number" class="form-control" id="harga_jual" name="harga_jual" placeholder="Masukan Harga Jual" value="" maxlength="50" required="">
                                 </div>
                         </div>
-                        <div class="position-relative row form-group"><label class="col-sm-3 col-form-label" for="stok_barang">Stok Barang</label>
-                            <div class="col-sm-9"><input type="number" class="form-control" id="stok_barang" name="stok_barang" placeholder="Masukan stok_barang" value="" maxlength="50" required="">
-                                </div>
-                        </div>
+                        <input type="hidden" class="form-control" id="stok_barang" name="stok_barang" placeholder="Masukan stok_barang" value="" maxlength="50" required="">
+
                     </div>
             </div>
             <div class="modal-footer">

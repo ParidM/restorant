@@ -77,15 +77,18 @@ class BarangController extends Controller
             'supplier_id' => 'required',
             'harga_beli' => 'required',
             'harga_jual' => 'required',
-            'stok_barang' => 'required',
         ], $messages = [
             'nama_barang.required' => 'Kolom Nama barang Wajib Diisi',
             'supplier_id.required' => 'Kolom No. Telepon Beli Wajib Diisi',
             'harga_beli.required' => 'Kolom Harga Beli Wajib Diisi',
             'harga_jual.required' => 'Kolom Harga Jual Wajib Diisi',
-            'stok_barang.required' => 'Kolom Alamat Wajib Diisi',
         ]);
         if($validator->passes()) {
+            if($request->stok_barang){
+                $nilai = $request->stok_barang;
+            }else{
+                $nilai = 0;
+            }
             $nama = Barang::updateOrCreate(
                 ['id' => $request->id],
                 [
@@ -93,7 +96,7 @@ class BarangController extends Controller
                     'supplier_id' => $request->supplier_id,
                     'harga_beli' => $request->harga_beli,
                     'harga_jual' => $request->harga_jual,
-                    'stok_barang' => $request->stok_barang,
+                    'stok_barang' => $nilai,
                 ]
             );
             return response()->json($nama);
