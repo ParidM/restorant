@@ -38,7 +38,7 @@ class HomeController extends Controller
         $data = Transaksi::find($id);
         $detailTransaksi = TransaksiDetail::where('transaksi_id', $data->id)->get();
         $pdf = PDF::loadView('myPDF', compact('data','detailTransaksi'));
-        $pdf->setPaper([0, 0, 226.772, 311.811], 'portrait');
+        $pdf->setPaper([0, 0, 226.772, 400], 'portrait');
         return $pdf->stream('Struk'.$data->kode.'.pdf');
     }
 }
