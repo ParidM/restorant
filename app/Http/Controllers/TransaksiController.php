@@ -31,7 +31,7 @@ class TransaksiController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Transaksi::all();
+        $data = Transaksi::orderBy('created_at', 'desc')->get();
         $detailBarang = TransaksiDetail::all();
         return view('transaksi.index', compact('data','detailBarang'));
     }

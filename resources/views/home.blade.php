@@ -69,7 +69,7 @@
         </div> 
     </div>
     <div class="row">
-        <div class="col-md-4 col-xl-3">
+        <div class="col-md-4 col-xl-4">
             <div class="card bg-c-blue order-card">
                 <div class="card-block">
                     <h6 class="m-b-20">Jumlah Pelanggan</h6>
@@ -79,31 +79,21 @@
             </div>
         </div>
         
-        <div class="col-md-4 col-xl-3">
+        <div class="col-md-4 col-xl-4">
             <div class="card bg-c-green order-card">
                 <div class="card-block">
                     <h6 class="m-b-20">Jumlah Produk</h6>
-                    <h2 class="text-right"><i class="fa fa-rocket f-left"></i><span>#</span></h2>
+                    <h2 class="text-right"><i class="fa fa-rocket f-left"></i><span>{{$barang}}</span></h2>
                     
                 </div>
             </div>
         </div>
         
-        <div class="col-md-4 col-xl-3">
+        <div class="col-md-4 col-xl-4">
             <div class="card bg-c-yellow order-card">
                 <div class="card-block">
                     <h6 class="m-b-20">Jumlah Supplier</h6>
-                    <h2 class="text-right"><i class="fa fa-refresh f-left"></i><span>#</span></h2>
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4 col-xl-3">
-            <div class="card bg-c-pink order-card">
-                <div class="card-block">
-                    <h6 class="m-b-20">Jumlah Transaksi</h6>
-                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>#</span></h2>
+                    <h2 class="text-right"><i class="fa fa-refresh f-left"></i><span>{{$supplier}}</span></h2>
                     
                 </div>
             </div>

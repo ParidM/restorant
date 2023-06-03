@@ -48,7 +48,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                    
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="metismenu-icon pe-7s-close"></i>Batal</button>

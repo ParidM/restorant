@@ -75,15 +75,15 @@
                            Laporan
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
-                    <ul class="{{(request()->is('penerima','penerima-thr*')) ? 'mm-show' : ''}}">
+                    <ul class="{{(request()->is('laporan-stok*','laporan-harga*')) ? 'mm-show' : ''}}">
                         <li>
-                            <a href="#" class="{{(request()->is('penerima')) ? 'mm-active' : ''}}">
+                            <a href="{{route('laporan-stok')}}" class="{{(request()->is('laporan-stok*')) ? 'mm-active' : ''}}">
                                 <i class="metismenu-icon pe-7s-mail-open-file"></i>
                                     Stok Barang
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="{{(request()->is('penerima-thr*')) ? 'mm-active' : ''}}">
+                            <a href="{{route('laporan-harga')}}" class="{{(request()->is('laporan-harga*')) ? 'mm-active' : ''}}">
                                 <i class="metismenu-icon pe-7s-mail-open-file"></i>
                                     Keuangan
                             </a>

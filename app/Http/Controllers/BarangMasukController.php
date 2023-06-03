@@ -32,7 +32,7 @@ class BarangMasukController extends Controller
     public function index(Request $request)
     {
         $supplier = Supplier::All();
-        $data = BarangMasuk::all();
+        $data = BarangMasuk::orderBy('created_at', 'desc')->get();
         $detailBarang = BarangMasukDetail::all();
         return view('barangMasuk.index', compact('supplier','data','detailBarang'));
     }

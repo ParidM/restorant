@@ -25,11 +25,14 @@ use App\Http\Controllers\LaporanController;
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/generate-struk/{id}', [HomeController::class, 'generateStruk'])->name('generateStruk');
 Route::get('/', function () {
     return redirect()->route('login');
 });
 Route::get('/laporan-stok', [LaporanController::class, 'stok'])->name('laporan-stok');
 Route::get('/laporan-harga', [LaporanController::class, 'harga'])->name('laporan-harga');
+Route::get('/laporan-harga-filer', [LaporanController::class, 'laporanHargaFilter'])->name('laporan-harga-filter');
+Route::get('/laporan-stok-filer', [LaporanController::class, 'laporanStokFilter'])->name('laporan-stok-filter');
 Route::resource('/pelanggan', PelangganController::class);
 Route::resource('/cart', CartController::class);
 Route::get('/hapus-pelanggan/{id}',[PelangganController::class,'hapus'])->name('hapus.pelanggan');

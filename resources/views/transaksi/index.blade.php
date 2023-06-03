@@ -63,6 +63,7 @@
                                             <button type="button" class="btn btn-sm btn-primary" id="detail" data-toggle="modal" data-target="#modal-show{{$barang_masuk->id}}">
                                                 <i class="fas fa-plus"></i>
                                             </button>
+                                            <a href="{{route('generateStruk', $barang_masuk->id)}}" type="button" targer="_BLANK" class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
                                         @include('transaksi.detail')
                                         </td>
                                     </tr>
