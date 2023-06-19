@@ -39,6 +39,7 @@
                             Beranda
                     </a>
                 </li>
+                @role('admin')
                 <li>
                     <a href="{{route('pelanggan.index')}}" class="{{(request()->is('pelanggan*')) ? 'mm-active' : ''}}">
                         <i class="metismenu-icon pe-7s-users"></i>
@@ -63,12 +64,14 @@
                             Barang Masuk
                     </a>
                 </li>
+                @endrole
                 <li>
                     <a href="{{route('transaksi.index')}}" class="{{(request()->is('transaksi*')) ? 'mm-active' : ''}}">
                         <i class="metismenu-icon pe-7s-upload"></i>
                             Transaksi
                     </a>
                 </li>
+                @role('admin')
                 <li>
                     <a href="#" class="{{(request()->is('penerima','penerima-thr*')) ? 'mm-active' : ''}}">
                         <i class="metismenu-icon pe-7s-cash"></i>
@@ -90,6 +93,7 @@
                         </li>
                     </ul>
                 </li>
+                @endrole
                 <li>
                     <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();"><i class="metismenu-icon pe-7s-power"></i>Keluar</a>

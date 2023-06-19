@@ -25,6 +25,7 @@ use App\Http\Controllers\LaporanController;
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/store-pelanggan-user', [HomeController::class, 'storePelanggan'])->name('storePelanggan');
 Route::get('/generate-struk/{id}', [HomeController::class, 'generateStruk'])->name('generateStruk');
 Route::get('/', function () {
     return redirect()->route('login');

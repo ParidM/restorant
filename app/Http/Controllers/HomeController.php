@@ -41,4 +41,17 @@ class HomeController extends Controller
         $pdf->setPaper([0, 0, 226.772, 400], 'portrait');
         return $pdf->stream('Struk'.$data->kode.'.pdf');
     }
+
+    public function storePelanggan(Request $request){
+            $nama = Pelanggan::updateOrCreate(
+                ['id' => $request->id],
+                [
+                    'nama_pelanggan' => $request->nama_pelanggan,
+                    'jk' => $request->jk,
+                    'no_telp' => $request->no_telp,
+                    'alamat' => $request->alamat,
+                ]
+            );
+            return back()->with('success', 'Pelanggan berhasil disimpan');
+    }
 }

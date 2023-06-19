@@ -25,7 +25,7 @@
             <div class="mb-3 card">
                 <div class="card-header-tab card-header-tab-animation card-header">
                     <div class="card-header-title">
-                        <a class="btn btn-danger" href="#"><i class="metismenu-icon pe-7s-back"></i> Kembali</a>
+                        <a class="btn btn-success" href="javascript:void(0)" id="create"><i class="metismenu-icon pe-7s-note2"></i> Tambah Pelanggan</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -89,9 +89,23 @@
         </div>    
     </div>
 </div>
+@include('transaksi.createPelanggan')
 <script>
     $(document).ready(function () {
         updateTotalKeseluruhan();
+        
+    });
+
+    //CREATE pelanggan
+    $('#create').click(function () {
+        $('#saveBtn').val("create-pelanggan");
+        $('#id').val('');
+        $('#formCreate').trigger("reset");
+        $('#modelHeading').html("Tambah Pelanggan");
+        $('#modalCreate').modal('show');
+        $('#modalCreate').appendTo('body');
+        $('#formCreate').find('.help-block').remove();
+        $('#formCreate').find('.col-sm-9').removeClass('.has-error');
     });
 
     document.getElementById('barang_id').addEventListener('change', function() {
